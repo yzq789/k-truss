@@ -5,8 +5,8 @@ using namespace std;
 
 int main(){
 
-	char *filename = "D:/archive/Study/Modern_Database_System/project3/dataset/Test/test.txt";
-	//char *filename = "D:/archive/Study/Modern_Database_System/project3/dataset/DBLP/dblp.ungraph.txt";
+	//char *filename = "D:/archive/Study/Modern_Database_System/project3/dataset/Test/test.txt";
+	char *filename = "D:/archive/Study/Modern_Database_System/project3/dataset/DBLP/dblp.ungraph.txt";
 	QueryProcessor *query_processor = new QueryProcessor(filename);
 	unordered_set<Community*> *communities = query_processor->queryKTrussCommunities(9, 4);
 

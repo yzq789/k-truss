@@ -7,8 +7,6 @@
 
 using namespace std;
 
-
-
 Graph::Graph(){}
 
 Graph::Graph(char* filepath){
