@@ -59,7 +59,8 @@ void Graph::computeSup(){
 	my_timer.start("compute supports");
 	int progress = 0;
 	for (MapG::iterator it = g.begin(); it != g.end(); ++it){
-		if (progress++ % (g.size() / 100) == 0) printf("%.2f%% points completed.\n", (float)progress / g.size() * 100);
+		if (g.size()>100)
+			if (progress++ % (g.size() / 100) == 0) printf("%.2f%% points completed.\n", (float)progress / g.size() * 100);
 		int v1 = it->first;
 		map<int, int> &adj_map = it->second;
 		for (map<int, int>::iterator jt = adj_map.begin(); jt != adj_map.end(); jt++){
