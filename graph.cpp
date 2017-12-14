@@ -12,6 +12,7 @@ Graph::Graph(){}
 Graph::Graph(char* filepath){
 	MyTimer my_timer;
 	my_timer.start("create gragh");
+	g.reserve(500000);
 	FILE* fp = fopen(filepath, "r");
 	int v1, v2;
 	while (fscanf(fp, "%d%d", &v1, &v2) != EOF){
@@ -34,7 +35,13 @@ void Graph::addEdgeOneWay(int v1, int v2){
 	g[v1][v2] = 0;
 }
 
-void Graph::remove(int v1, int v2){
+void Graph::remove(int v1, int v2, bool sup_index_remove){
+	if (sup_index_remove){
+		int sup = g[v1][v2];
+		pair<int, int> e = v1 < v2 ? make_pair(v1, v2) : make_pair(v2, v1);
+		sup_index[sup].erase(e);
+		if (sup_index[sup].empty()) sup_index.erase(sup);
+	}
 	g[v1].erase(v2);
 	g[v2].erase(v1);
 }
@@ -43,7 +50,15 @@ int Graph::sup(int v1, int v2){
 	return g[v1][v2];
 }
 
-void Graph::decrementSup(int v1, int v2){
+void Graph::decrementSup(int v1, int v2, bool has_sup_index){
+	if (has_sup_index){
+		int sup = g[v1][v2];
+		pair<int, int> e = v1 < v2 ? make_pair(v1, v2) : make_pair(v2, v1);
+		sup_index[sup].erase(e);
+		if (sup_index[sup].empty()) sup_index.erase(sup);
+		if (sup - 1 < 0) throw exception("error: support < 0");
+		sup_index[sup - 1].insert(e);
+	}
 	g[v1][v2]--;
 	g[v2][v1]--;
 }
@@ -57,8 +72,6 @@ void Graph::computeSup(){
 	my_timer.start("compute supports");
 	int progress = 0;
 	for (MapG::iterator it = g.begin(); it != g.end(); ++it){
-		if (g.size()>100)
-			if (progress++ % (g.size() / 100) == 0) printf("%.2f%% points completed.\n", (float)progress / g.size() * 100);
 		int v1 = it->first;
 		map<int, int> &adj_map = it->second;
 		for (map<int, int>::iterator jt = adj_map.begin(); jt != adj_map.end(); jt++){
@@ -66,7 +79,10 @@ void Graph::computeSup(){
 			if (g[v1][v2] < 0){
 				map<int, int> inter;
 				intersetion(N(v1), N(v2), &inter);
-				g[v2][v1] = g[v1][v2] = inter.size();
+				int sup = inter.size();
+				g[v2][v1] = g[v1][v2] = sup;
+				pair<int, int> e = v1 < v2 ? make_pair(v1, v2) : make_pair(v2, v1);
+				sup_index[sup].insert(e);
 			}
 		}
 	}
@@ -75,31 +91,16 @@ void Graph::computeSup(){
 
 Edge Graph::lowestSupEdge(){
 	MyTimer my_timer;
-	my_timer.start("pop lowest support edge");
-	int min = INT_MAX;
-	int min_v1, min_v2;
-	for (MapG::iterator it = g.begin(); it != g.end(); ++it){
-		int v1 = it->first;
-		map<int, int> adj_map = it->second;
-		for (map<int, int>::iterator jt = adj_map.begin(); jt != adj_map.end(); jt++){
-			int v2 = jt->first;
-			if (g[v1][v2] < min){
-				min = g[v1][v2];
-				min_v1 = v1;
-				min_v2 = v2;
-			}
-		}
-	}
 	Edge e;
-	if (min == INT_MAX){
+	if (sup_index.empty()){
 		e.w = -1;
+		return e;
 	}
-	else{
-		e.w = min;
-		e.v1 = min_v1;
-		e.v2 = min_v2;
-	}
-	my_timer.end();
+	int min_sup = sup_index.begin()->first;
+	pair<int, int> edge = *(sup_index.begin()->second.begin());
+	e.w = min_sup;
+	e.v1 = edge.first;
+	e.v2 = edge.second;
 	return e;
 }
 
@@ -122,7 +123,7 @@ static bool comp(pair<const int, int> p1, pair<const int, int> p2){
 	return p1.first < p2.first;
 }
 
-void Graph::intersetion(map<int, int> set1, map<int, int> set2, map<int, int> *inter){
+void Graph::intersetion(map<int, int> &set1, map<int, int> &set2, map<int, int> *inter){
 	set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(*inter, inter->begin()), comp);
 }
 

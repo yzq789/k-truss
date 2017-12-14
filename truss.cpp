@@ -1,5 +1,8 @@
+#include <iostream>
 #include "truss.h"
 #include "my_timer.h"
+
+using namespace std;
 
 Truss::Truss(Graph &G){
 	trussDecomposition(G);
@@ -16,9 +19,9 @@ int Truss::get(int v1, int v2){
 
 void Truss::trussDecomposition(Graph G){
 	MyTimer my_timer;
-	my_timer.start("truss decomposition");
 	int k = 2;
 	G.computeSup();
+	my_timer.start("truss decomposition");
 	int progress = 0;
 	do{
 		while (true){
@@ -37,13 +40,12 @@ void Truss::trussDecomposition(Graph G){
 			for (map<int, int>::iterator it = G.N(u).begin(); it != G.N(u).end(); it++){
 				int w = it->first;
 				if (G.edgeExists(v, w)){
-					G.decrementSup(u, w);
-					G.decrementSup(v, w);
+					G.decrementSup(u, w, true);
+					G.decrementSup(v, w, true);
 				}
 			}
 			add(u, v, k);
-			G.remove(u, v);
-			if (progress++ % 10498 == 0) printf("%.2f%% truss decomposition completed.\n", (float)progress / 1049866 * 100);
+			G.remove(u, v, true);
 		}
 		k++;
 	} while (G.hasEdge());
