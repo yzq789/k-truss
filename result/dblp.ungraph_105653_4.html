@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+	<script src="js/dataTool.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+	
+	   <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+		xml = '<?xml version="1.0" encoding="UTF-8"?>' + 
+		 '<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2" xmlns:viz="http://www.gexf.net/1.2draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd">' + 
+		 '  <meta lastmodifieddate="2014-01-30">' + 
+		 '    <creator>Gephi 0.8.1</creator>' + 
+		 '    <description></description>' + 
+		 '  </meta>' + 
+		 '  <graph defaultedgetype="undirected" mode="static">' + 
+		 '    <attributes class="node" mode="static">' + 
+		 '      <attribute id="modularity_class" title="Modularity Class" type="integer"></attribute>' + 
+		 '      <attribute id="symbol_size" title="Modularity Class" type="integer"></attribute>' + 
+		 '    </attributes>' + 
+		 '    <nodes>' +  '      <node id="105653" label="vertex:105653">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="1"></attvalue>' + 
+ '          <attvalue for="symbol_size" value="20"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="211814" label="vertex:211814">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="210738" label="vertex:210738">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="105654" label="vertex:105654">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="266540" label="vertex:266540">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="344991" label="vertex:344991">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="210737" label="vertex:210737">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="211813" label="vertex:211813">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="333794" label="vertex:333794">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="210739" label="vertex:210739">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="2"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="66363" label="vertex:66363">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="3"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="143287" label="vertex:143287">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="3"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="360184" label="vertex:360184">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="3"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="360185" label="vertex:360185">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="3"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+ '      <node id="360186" label="vertex:360186">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="3"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+		 '    </nodes>' + 
+		 '    <edges>' + 
+		 '      <edge id="0" source="211814" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="1" source="211814" target="105654">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="2" source="211814" target="210737">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="3" source="211814" target="210738">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="4" source="211814" target="210739">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="5" source="211814" target="211813">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="6" source="211814" target="266540">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="7" source="211814" target="333794">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="8" source="211814" target="344991">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="9" source="210738" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="10" source="210738" target="210737">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="11" source="210738" target="210739">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="12" source="210738" target="211813">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="13" source="210738" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="14" source="105653" target="105654">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="15" source="105653" target="210737">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="16" source="105653" target="210738">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="17" source="105653" target="210739">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="18" source="105653" target="211813">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="19" source="105653" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="20" source="105653" target="266540">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="21" source="105653" target="333794">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="22" source="105653" target="344991">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="23" source="105654" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="24" source="105654" target="210737">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="25" source="105654" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="26" source="105654" target="266540">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="27" source="105654" target="333794">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="28" source="105654" target="344991">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="29" source="266540" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="30" source="266540" target="105654">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="31" source="266540" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="32" source="266540" target="333794">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="33" source="266540" target="344991">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="34" source="344991" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="35" source="344991" target="105654">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="36" source="344991" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="37" source="344991" target="266540">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="38" source="344991" target="333794">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="39" source="210737" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="40" source="210737" target="105654">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="41" source="210737" target="210738">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="42" source="210737" target="210739">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="43" source="210737" target="211813">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="44" source="210737" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="45" source="211813" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="46" source="211813" target="210737">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="47" source="211813" target="210738">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="48" source="211813" target="210739">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="49" source="211813" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="50" source="333794" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="51" source="333794" target="105654">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="52" source="333794" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="53" source="333794" target="266540">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="54" source="333794" target="344991">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="55" source="210739" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="56" source="210739" target="210737">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="57" source="210739" target="210738">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="58" source="210739" target="211813">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="59" source="210739" target="211814">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="60" source="105653" target="66363">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="61" source="105653" target="143287">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="62" source="105653" target="360184">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="63" source="105653" target="360185">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="64" source="105653" target="360186">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="65" source="66363" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="66" source="66363" target="143287">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="67" source="66363" target="360184">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="68" source="66363" target="360185">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="69" source="66363" target="360186">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="70" source="143287" target="66363">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="71" source="143287" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="72" source="143287" target="360184">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="73" source="143287" target="360185">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="74" source="143287" target="360186">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="75" source="360184" target="66363">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="76" source="360184" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="77" source="360184" target="143287">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="78" source="360184" target="360185">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="79" source="360184" target="360186">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="80" source="360185" target="66363">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="81" source="360185" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="82" source="360185" target="143287">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="83" source="360185" target="360184">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="84" source="360185" target="360186">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="85" source="360186" target="66363">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="86" source="360186" target="105653">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="87" source="360186" target="143287">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="88" source="360186" target="360184">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '      <edge id="89" source="360186" target="360185">' + 
+		 '        <attvalues></attvalues>' + 
+		 '      </edge>' + 
+		 '    </edges>' + 
+		 '  </graph>' + 
+		 '</gexf>';
+		
+		
+		
+		myChart.showLoading();
+		
+			myChart.hideLoading();
+
+			var graph = echarts.dataTool.gexf.parse(xml);
+			var categories = [];
+			for (var i = 0; i < 90; i++) {
+				categories[i] = {
+					name: 'class' + i
+				};
+			}
+			graph.nodes.forEach(function (node) {
+				node.itemStyle = null;
+				if(node.attributes.symbol_size == null)
+					node.symbolSize = 10;
+				else
+					node.symbolSize = node.attributes.symbol_size
+				node.value = node.symbolSize;
+				node.category = node.attributes.modularity_class;
+				// Use random x, y
+				node.x = node.y = null;
+				node.draggable = true;
+			});
+			option = {
+				title: {
+					text: 'dataset : dblp.ungraph.txt\nv = 105653\nk = 4',
+					subtext: 'Default layout',
+					top: 'bottom',
+					left: 'right'
+				},
+				tooltip: {show:false},
+				animation: false,
+				series : [
+					{
+						name: 'Les Miserables',
+						type: 'graph',
+						layout: 'force',
+						data: graph.nodes,
+						links: graph.links,
+						categories: categories,
+						roam: true,
+						label: {
+							normal: {
+								position: 'right'
+							}
+						},
+						force: {
+							repulsion: 100
+						}
+					}
+				]
+			};
+
+			myChart.setOption(option);
+    </script>
+</body>
+
+
+</html>

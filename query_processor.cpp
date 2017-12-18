@@ -1,22 +1,44 @@
 #include <queue>
 #include "query_processor.h"
 #include "my_timer.h"
+#include "visualize.h"
 
 using namespace std;
+
 
 QueryProcessor::QueryProcessor(char* filename){
 	G = new Graph(filename);
 	T = new Truss(*G);
 	tcpIndex = new TCPIndex(*G, *T);
+	char *p = strrchr(filename, '/');
+	strcpy(dataset_name, p + 1);
 }
 
 QueryProcessor::~QueryProcessor(){
 	delete G, T, tcpIndex;
 }
 
-unordered_set<Community*>* QueryProcessor::queryKTrussCommunities(int v, int k){
+void QueryProcessor::outputCommunities(unordered_set<Community*> *communities, int v, int k){
+	char filename[1000];
+	sprintf(filename, "./result/%s_%d_%d.txt", dataset_name, v, k);
+	FILE *fp = fopen(filename, "w");
+	for (unordered_set<Community*>::iterator it = communities->begin(); it != communities->end(); it++){
+		Community *community = *it;
+		for (Graph::MapG::iterator ct = community->begin(); ct != community->end(); ct++){
+			int vetex = ct->first;
+			if (ct != community->begin()) fprintf(fp, ",");
+			fprintf(fp, "%d", vetex);
+		}
+		fprintf(fp, "\n");
+	}
+	fclose(fp);
+}
+
+void QueryProcessor::queryKTrussCommunities(int v, int k){
 	MyTimer my_timer;
-	my_timer.start("query k-truss communities");
+	char log[512];
+	sprintf(log, "query k-truss communities v=%d k=%d", v, k);
+	my_timer.start(log);
 	unordered_set<Community*> *communities = new unordered_set<Community*>();
 	Graph *visited = new Graph();
 	for (map<int, int>::iterator it = G->N(v).begin(); it != G->N(v).end(); it++){
@@ -47,5 +69,11 @@ unordered_set<Community*>* QueryProcessor::queryKTrussCommunities(int v, int k){
 	}
 	delete visited;
 	my_timer.end();
-	return communities;
+	my_timer.start("result visualizing");
+	visualize(*communities, v, k, dataset_name);
+	my_timer.end();
+	outputCommunities(communities, v, k);
+	for (unordered_set<Community*>::iterator it = communities->begin(); it != communities->end(); it++){
+		delete *it;
+	}
 }

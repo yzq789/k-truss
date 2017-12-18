@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+	<script src="js/dataTool.min.js"></script>
+</head>
+
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+	
+	   <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+		xml = '<?xml version="1.0" encoding="UTF-8"?>' + 
+		 '<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2" xmlns:viz="http://www.gexf.net/1.2draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd">' + 
+		 '  <meta lastmodifieddate="2014-01-30">' + 
+		 '    <creator>Gephi 0.8.1</creator>' + 
+		 '    <description></description>' + 
+		 '  </meta>' + 
+		 '  <graph defaultedgetype="undirected" mode="static">' + 
+		 '    <attributes class="node" mode="static">' + 
+		 '      <attribute id="modularity_class" title="Modularity Class" type="integer"></attribute>' + 
+		 '      <attribute id="symbol_size" title="Modularity Class" type="integer"></attribute>' + 
+		 '    </attributes>' + 
+		 '    <nodes>' +  '      <node id="105653" label="vertex:105653">' + 
+ '        <attvalues>' + 
+ '          <attvalue for="modularity_class" value="1"></attvalue>' + 
+ '          <attvalue for="symbol_size" value="20"></attvalue>' + 
+ '        </attvalues>' + 
+ '      </node>' + 
+		 '    </nodes>' + 
+		 '    <edges>' + 
+		 '    </edges>' + 
+		 '  </graph>' + 
+		 '</gexf>';
+		
+		
+		
+		myChart.showLoading();
+		
+			myChart.hideLoading();
+
+			var graph = echarts.dataTool.gexf.parse(xml);
+			var categories = [];
+			for (var i = 0; i < 90; i++) {
+				categories[i] = {
+					name: 'class' + i
+				};
+			}
+			graph.nodes.forEach(function (node) {
+				node.itemStyle = null;
+				if(node.attributes.symbol_size == null)
+					node.symbolSize = 10;
+				else
+					node.symbolSize = node.attributes.symbol_size
+				node.value = node.symbolSize;
+				node.category = node.attributes.modularity_class;
+				// Use random x, y
+				node.x = node.y = null;
+				node.draggable = true;
+			});
+			option = {
+				title: {
+					text: 'dataset : dblp.ungraph.txt\nv = 105653\nk = 30',
+					subtext: 'Default layout',
+					top: 'bottom',
+					left: 'right'
+				},
+				tooltip: {show:false},
+				animation: false,
+				series : [
+					{
+						name: 'Les Miserables',
+						type: 'graph',
+						layout: 'force',
+						data: graph.nodes,
+						links: graph.links,
+						categories: categories,
+						roam: true,
+						label: {
+							normal: {
+								position: 'right'
+							}
+						},
+						force: {
+							repulsion: 100
+						}
+					}
+				]
+			};
+
+			myChart.setOption(option);
+    </script>
+</body>
+
+
+</html>

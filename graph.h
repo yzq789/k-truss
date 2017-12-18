@@ -4,6 +4,10 @@
 
 using namespace std;
 
+#ifndef __GRAPH_H
+#define __GRAPH_H
+
+
 typedef struct{
 	int w;
 	int v1;
@@ -37,3 +41,5 @@ protected:
 private:
 	void intersetion(map<int,int> &set1, map<int,int> &set2, map<int,int> *inter);
 };
+
+#endif
