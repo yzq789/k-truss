@@ -51,8 +51,8 @@ void Truss::trussDecomposition(Graph G){
 	my_timer.end();
 }
 
-void Truss::getKLevelTriangleList(int u, int v, int k, list<int> &res){
-	list<int> commonN;
+void Truss::getKLevelTriangleList(int u, int v, int k, vector<int> &res){
+	vector<int> commonN;
 	getCommonN(u, v, commonN);
 	for(int n : commonN)
 	{
@@ -63,7 +63,7 @@ void Truss::getKLevelTriangleList(int u, int v, int k, list<int> &res){
 }
 
 int Truss::getKLevelTriangleListLen(int u, int v, int k) {
-	list<int> triList;
+	vector<int> triList;
 	getKLevelTriangleList(u, v, k, triList);
 	return triList.size();
 }
@@ -71,12 +71,14 @@ int Truss::getKLevelTriangleListLen(int u, int v, int k) {
 void Truss::getK1K2(int u, int v, int &k1, int &k2) {
 	int k = 2;
 	k1 = k2 = 0;
+	int lastnum = 0;
 	while(true){
 		int num = getKLevelTriangleListLen(u, v, k);
 		if(num >= k - 2)k1 = k;
-		if(num >= k - 3)k2 = k;
+		if(lastnum >= k - 2)k2 = k;
 
-		if(num < k - 3)break;
+		if(lastnum < k - 2)break;
+		lastnum = num;
 		k++;
 	}
 }
@@ -84,11 +86,14 @@ void Truss::getK1K2(int u, int v, int &k1, int &k2) {
 void Truss::updateWithEdgeInsertion(int u, int v) {
 	MyTimer my_timer;
 	int k1, k2;
+	my_timer.start("compute k1 & k2");
 	getK1K2(u, v, k1, k2);
+	my_timer.end();
 
+	my_timer.start("init Lk");
 	add(u, v, k1);
 	int kmax = k2 - 1;
-	list<int> commonN;
+	vector<int> commonN;
 	getCommonN(u, v, commonN);
 	Graph Lk;
 	for(int w : commonN){
@@ -98,7 +103,9 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 			if(get(w, v) == k)Lk.addEdge(w, v, getKLevelTriangleListLen(w, v, k));
 		}
 	}
+	my_timer.end();
 
+	my_timer.start("deal with Lk");
 	for(int k = kmax;k >= 2;k--){
 		vector<pair<int, int>> Q;
 		Q.clear();
@@ -114,7 +121,7 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 			int x = e.first;
 			int y = e.second;
 			s.addEdge(x, y, 0);
-			list<int> commonNXY;
+			vector<int> commonNXY;
 			getCommonN(x, y, commonNXY);
 			for(int z : commonNXY){
 				if(get(z, x) < k || get(z, y) < k)continue;
@@ -134,7 +141,7 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 		int x, y;
 		while(getMinS(Lk, x, y) <= k-2){
 			Lk.remove(x, y);
-			list<int> commonNXY;
+			vector<int> commonNXY;
 			getCommonN(x, y, commonNXY);
 			for(int z : commonN){
 				if(get(x, z) < k || get(y, z) < k)continue;
@@ -152,9 +159,13 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 			}
 		}
 	}
+	my_timer.end();
 }
 
 int Truss::getMinS(Graph &s, int &x, int &y){
+
+	if(!s.hasEdge())return 10000;
+
 	x = s.begin()->first;
 	y = s.begin()->second.begin()->first;
 	int min = s.begin()->second.begin()->second;
@@ -169,4 +180,17 @@ int Truss::getMinS(Graph &s, int &x, int &y){
 		}
 	}
 	return min;
+}
+
+int Truss::getMaxK(vector<int> &commonN, int v){
+	int maxk, maxindex;
+	maxk = maxindex = 0;
+	for(int w : commonN){
+		if(get(v, w) > maxk){
+			maxk = get(v, w);
+			maxindex = w;
+		}
+	}
+
+	return maxindex;
 }

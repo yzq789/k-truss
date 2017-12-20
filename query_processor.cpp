@@ -34,7 +34,7 @@ void QueryProcessor::outputCommunities(unordered_set<Community*> *communities, i
 	fclose(fp);
 }
 
-void QueryProcessor::queryKTrussCommunities(int v, int k){
+unordered_set<Community*>* QueryProcessor::queryKTrussCommunities(int v, int k){
 	MyTimer my_timer;
 	char log[512];
 	sprintf(log, "query k-truss communities v=%d k=%d", v, k);
@@ -70,18 +70,32 @@ void QueryProcessor::queryKTrussCommunities(int v, int k){
 	}
 	delete visited;
 	my_timer.end();
-	my_timer.start("result visualizing");
-	visualize(*communities, v, k, dataset_name);
-	my_timer.end();
-	outputCommunities(communities, v, k);
-	for (unordered_set<Community*>::iterator it = communities->begin(); it != communities->end(); it++){
-		delete *it;
-	}
+
+	return communities;
 }
 
 void QueryProcessor::insertEdge(int u, int v) {
+	MyTimer my_timer;
 	G->addEdge(u, v);
+
+	my_timer.start("update truss");
 	T->updateWithEdgeInsertion(u, v);
+	my_timer.end();
+
+	my_timer.start("update TCP index");
+	vector<int> commonN;
+	G->getCommonN(u, v, commonN);
+	int index = T->getMaxK(commonN, v);
+	tcpIndex->addEdge(u, v, index, T->get(v, index));
+	index = T->getMaxK(commonN, u);
+	tcpIndex->addEdge(v, u, index, T->get(u, index));
+	for(int w : commonN){
+		int mink = T->get(u, v);
+		if(mink > T->get(u, w))mink = T->get(u, w);
+		if(mink > T->get(v, w))mink = T->get(v, w);
+		tcpIndex->updateEdge(w, u, v, mink);
+	}
+	my_timer.end();
 }
 
 void QueryProcessor::displayKTruss(){

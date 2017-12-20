@@ -138,7 +138,7 @@ Graph::MapG::iterator Graph::end(){
 	return g.end();
 }
 
-void Graph::getCommonN(int u, int v, list<int> &commonN){
+void Graph::getCommonN(int u, int v, vector<int> &commonN){
 	map<int, int> res;
 	intersetion(N(u), N(v), &res);
 	for(map<int,int>::iterator it = res.begin();it != res.end();it++)
