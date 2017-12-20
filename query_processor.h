@@ -10,6 +10,8 @@ public:
 	QueryProcessor(char* filename);
 	~QueryProcessor();
 	void queryKTrussCommunities(int v, int k);
+	void insertEdge(int u, int v);
+	void displayKTruss();
 
 private:
 	Graph *G;

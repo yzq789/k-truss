@@ -2,6 +2,7 @@
 #include <limits.h>
 #include <iterator>
 #include <algorithm>
+#include <iostream>
 #include "my_timer.h"
 #include "graph.h"
 
@@ -20,6 +21,10 @@ Graph::Graph(char* filepath){
 	}
 	fclose(fp);
 	my_timer.end();
+}
+
+int Graph::get(int v1, int v2){
+	return g[v1][v2];
 }
 
 void Graph::addEdge(int v1, int v2){
@@ -56,7 +61,6 @@ void Graph::decrementSup(int v1, int v2, bool has_sup_index){
 		pair<int, int> e = v1 < v2 ? make_pair(v1, v2) : make_pair(v2, v1);
 		sup_index[sup].erase(e);
 		if (sup_index[sup].empty()) sup_index.erase(sup);
-		if (sup - 1 < 0) throw exception("error: support < 0");
 		sup_index[sup - 1].insert(e);
 	}
 	g[v1][v2]--;
@@ -132,4 +136,19 @@ Graph::MapG::iterator Graph::begin(){
 }
 Graph::MapG::iterator Graph::end(){
 	return g.end();
+}
+
+void Graph::getCommonN(int u, int v, list<int> &commonN){
+	map<int, int> res;
+	intersetion(N(u), N(v), &res);
+	for(map<int,int>::iterator it = res.begin();it != res.end();it++)
+		commonN.push_back(it->first);
+}
+
+void Graph::display() {
+	for(MapG::iterator it = begin();it != end();it++){
+		for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
+			cout <<it->first <<"\t" <<itm->first <<"\t" <<itm->second <<endl;
+		}
+	}
 }

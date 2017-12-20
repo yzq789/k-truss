@@ -1,6 +1,7 @@
 #include <set>
 #include <map>
 #include <unordered_map>
+#include <list>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ class Graph{
 public :
 	Graph();
 	Graph(char* filepath);
+	int get(int v1, int v2);
 	void addEdge(int v1, int v2);
 	void addEdge(int v1, int v2, int w);
 	void addEdgeOneWay(int v1, int v2);
@@ -33,6 +35,8 @@ public :
 	typedef unordered_map<int, map<int, int>> MapG;
 	MapG::iterator begin();
 	MapG::iterator end();
+	void getCommonN(int u, int v, list<int> &res);
+	void display();
 
 protected:
 	MapG g;

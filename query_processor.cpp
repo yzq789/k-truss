@@ -48,7 +48,8 @@ void QueryProcessor::queryKTrussCommunities(int v, int k){
 			queue<pair<int,int>> q;
 			q.push(make_pair(v, u));
 			while (!q.empty()){
-				pair<int, int> x_y = q.front();
+				pair<int, int> x_y;
+				x_y = q.front();
 				q.pop();
 				int x = x_y.first, y = x_y.second;
 				if (!visited->edgeExists(x,y)){
@@ -69,11 +70,20 @@ void QueryProcessor::queryKTrussCommunities(int v, int k){
 	}
 	delete visited;
 	my_timer.end();
-	my_timer.start("result visualizing");
-	visualize(*communities, v, k, dataset_name);
-	my_timer.end();
-	outputCommunities(communities, v, k);
+//	my_timer.start("result visualizing");
+//	visualize(*communities, v, k, dataset_name);
+//	my_timer.end();
+//	outputCommunities(communities, v, k);
 	for (unordered_set<Community*>::iterator it = communities->begin(); it != communities->end(); it++){
 		delete *it;
 	}
+}
+
+void QueryProcessor::insertEdge(int u, int v) {
+	G->addEdge(u, v);
+	T->updateWithEdgeInsertion(u, v);
+}
+
+void QueryProcessor::displayKTruss(){
+	T->display();
 }

@@ -1,4 +1,5 @@
 #include <ios>
+#include <iostream>
 #include "my_timer.h"
 #include "query_processor.h"
 #include "visualize.h"
@@ -11,9 +12,13 @@ int main(){
 	ios_base::sync_with_stdio(false);
 	QueryProcessor *query_processor;
 
-	char *test_path = "D:/archive/Study/Modern_Database_System/project3/dataset/Test/test.txt";
+	char *test_path = "/Users/East/CLionProjects/k-truss/data/test.txt";
 	query_processor = new QueryProcessor(test_path);
 	query_processor->queryKTrussCommunities(9, 5);
+    query_processor->displayKTruss();
+    query_processor->insertEdge(32, 42);
+    cout <<"new Truss:" <<endl;
+    query_processor->displayKTruss();
 	delete query_processor;
 
 	//char *facebook_path = "./data/facebook_combined.txt";
