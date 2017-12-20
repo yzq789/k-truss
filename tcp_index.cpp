@@ -20,7 +20,7 @@ static bool _comp(Edge &e1, Edge &e2){
 TCPIndex::TCPIndex(Graph &G, Truss &T){   // Kruskal��s algorithm
 	MyTimer my_timer;
 	my_timer.start("TCP index construction");
-	for (Graph::MapG::iterator it = G.begin(); it != G.end(); it++){
+	for (auto it = G.begin(); it != G.end(); it++){
 		int x = it->first;
 		map<int, int> &adj_map = it->second;
 		vector<int> vec_adjv;

@@ -75,7 +75,7 @@ void Graph::computeSup(){
 	MyTimer my_timer;
 	my_timer.start("compute supports");
 	int progress = 0;
-	for (MapG::iterator it = g.begin(); it != g.end(); ++it){
+	for (auto it = g.begin(); it != g.end(); ++it){
 		int v1 = it->first;
 		map<int, int> &adj_map = it->second;
 		for (map<int, int>::iterator jt = adj_map.begin(); jt != adj_map.end(); jt++){
@@ -117,7 +117,7 @@ map<int, int>& Graph::N(int v){
 }
 
 bool Graph::hasEdge(){
-	for (MapG::iterator it = g.begin(); it != g.end(); ++it){
+	for (auto it = g.begin(); it != g.end(); ++it){
 		if (it->second.size() > 0) return true;
 	}
 	return false;
