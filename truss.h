@@ -10,6 +10,7 @@ public:
 	Truss(Graph &G);
 	void updateWithEdgeInsertion(int u, int v);
 	int getMaxK(vector<int> &commonN, int v);
+	int getMinKInTri(int x, int y, int z);
 
 private:
 	void add(int v1, int v2, int k);

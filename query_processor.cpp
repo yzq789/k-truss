@@ -83,18 +83,17 @@ void QueryProcessor::insertEdge(int u, int v) {
 	my_timer.end();
 
 	my_timer.start("update TCP index");
-	vector<int> commonN;
-	G->getCommonN(u, v, commonN);
-	int index = T->getMaxK(commonN, v);
-	tcpIndex->addEdge(u, v, index, T->get(v, index));
-	index = T->getMaxK(commonN, u);
-	tcpIndex->addEdge(v, u, index, T->get(u, index));
-	for(int w : commonN){
-		int mink = T->get(u, v);
-		if(mink > T->get(u, w))mink = T->get(u, w);
-		if(mink > T->get(v, w))mink = T->get(v, w);
-		tcpIndex->updateEdge(w, u, v, mink);
-	}
+//	vector<int> commonN;
+//	G->getCommonN(u, v, commonN);
+//	int index = T->getMaxK(commonN, v);
+//	tcpIndex->addEdge(u, v, index, T->get(v, index));
+//	index = T->getMaxK(commonN, u);
+//	tcpIndex->addEdge(v, u, index, T->get(u, index));
+//	for(int w : commonN){
+//		int mink = T->getMinKInTri(u, v, w);
+//		tcpIndex->updateEdge(w, u, v, mink);
+//	}
+	tcpIndex = new TCPIndex(*G, *T);
 	my_timer.end();
 }
 

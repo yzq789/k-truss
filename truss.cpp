@@ -109,7 +109,7 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 	for(int k = kmax;k >= 2;k--){
 		vector<pair<int, int>> Q;
 		Q.clear();
-		for(Graph::MapG::iterator it = Lk[k].begin();it != Lk[k].end();it++){
+		for(auto it = Lk[k].begin();it != Lk[k].end();it++){
 			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
 				Q.push_back(make_pair(it->first, itm->first));
 			}
@@ -151,7 +151,7 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 				if(Lk[k].edgeExists(y, z))Lk[k].addEdge(y, z, Lk[k].get(y, z) - 1);
 			}
 		}
-		for(Graph::MapG::iterator it = Lk[k].begin();it != Lk[k].end();it++){
+		for(auto it = Lk[k].begin();it != Lk[k].end();it++){
 			x = it->first;
 			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
 				y = itm->first;
@@ -169,7 +169,7 @@ int Truss::getMinS(Graph &s, int &x, int &y){
 	y = s.begin()->second.begin()->first;
 	int min = s.begin()->second.begin()->second;
 
-	for(MapG::iterator it = begin();it != end();it++){
+	for(auto it = begin();it != end();it++){
 		for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
 			if(itm->second < min){
 				min = itm->second;
@@ -190,6 +190,12 @@ int Truss::getMaxK(vector<int> &commonN, int v){
 			maxindex = w;
 		}
 	}
-
 	return maxindex;
+}
+
+int Truss::getMinKInTri(int x, int y, int z){
+	int mink = get(x, y);
+	if(mink > get(x, z))mink = get(x, z);
+	if(mink > get(y, z))mink = get(y, z);
+	return mink;
 }
