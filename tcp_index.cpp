@@ -17,7 +17,7 @@ static bool _comp(Edge &e1, Edge &e2){
 	return e1.w > e2.w;
 }
 
-TCPIndex::TCPIndex(Graph &G, Truss &T){   // Kruskal¡¯s algorithm
+TCPIndex::TCPIndex(Graph &G, Truss &T){   // Kruskalï¿½ï¿½s algorithm
 	MyTimer my_timer;
 	my_timer.start("TCP index construction");
 	for (Graph::MapG::iterator it = G.begin(); it != G.end(); it++){
@@ -95,5 +95,46 @@ TCPIndex::~TCPIndex(){
 	for (unordered_map<int, Graph*>::iterator it; it != tcp_index.end(); it++){
 		delete it->second;
 	}
+}
+
+void TCPIndex::addEdge(int x, int y, int z, int k){
+	tcp_index[x]->addEdge(y, z, k);
+}
+
+void TCPIndex::updateEdge(int x, int y, int z, int k){
+	Graph* g = tcp_index[x];
+	vector<int> path;
+	path.push_back(y);
+	if(!updateEdge(g, y, z, k, path))g->addEdge(y, z, k);
+	else{
+		int mink = 10000;
+		int last = y;
+		for(int next : path){
+			if(next == y)continue;
+			if(g->get(last, next) < mink)mink = g->get(last, next);
+			last = next;
+		}
+
+		if(mink < k){
+			int u = path[path.size() - 2];
+			int v = path[path.size() - 1];
+			g->remove(u, v);
+			g->addEdge(y, z, k);
+		}
+	}
+}
+
+bool TCPIndex::updateEdge(Graph *g, int u, int last, int des, vector<int> &path){
+	int res = 0;
+	map<int, int> &nei = g->N(u);
+	for(map<int, int>::iterator it = nei.begin();it != nei.end();it++){
+		if(it->first == last)continue;
+
+		path.push_back(it->first);
+		if(it->first == des)return true;
+		if(updateEdge(g, it->first, u, des, path))return true;
+		path.pop_back();
+	}
+	return false;
 }
 

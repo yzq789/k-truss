@@ -1,7 +1,7 @@
 #include <set>
 #include <map>
 #include <unordered_map>
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -35,7 +35,7 @@ public :
 	typedef unordered_map<int, map<int, int>> MapG;
 	MapG::iterator begin();
 	MapG::iterator end();
-	void getCommonN(int u, int v, list<int> &res);
+	void getCommonN(int u, int v, vector<int> &res);
 	void display();
 
 protected:
