@@ -15,7 +15,7 @@ private:
 	void getKLevelTriangleList(int u, int v, int k, list<int> &res);
 	int getKLevelTriangleListLen(int u, int v, int k);
 	void getK1K2(int u, int v, int &k1, int &k2);
-	int getMinS(Graph s, int &x, int &y);
+	int getMinS(Graph &s, int &x, int &y);
 };
 
 #endif

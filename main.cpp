@@ -12,13 +12,13 @@ int main(){
 	ios_base::sync_with_stdio(false);
 	QueryProcessor *query_processor;
 
-	char *test_path = "/Users/East/CLionProjects/k-truss/data/test.txt";
+	char *test_path = "data/test.txt";
 	query_processor = new QueryProcessor(test_path);
 	query_processor->queryKTrussCommunities(9, 5);
-    query_processor->displayKTruss();
-    query_processor->insertEdge(32, 42);
-    cout <<"new Truss:" <<endl;
-    query_processor->displayKTruss();
+    //query_processor->displayKTruss();
+    //query_processor->insertEdge(32, 42);
+    //cout <<"new Truss:" <<endl;
+    //query_processor->displayKTruss();
 	delete query_processor;
 
 	//char *facebook_path = "./data/facebook_combined.txt";

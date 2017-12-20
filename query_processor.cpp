@@ -70,10 +70,10 @@ void QueryProcessor::queryKTrussCommunities(int v, int k){
 	}
 	delete visited;
 	my_timer.end();
-//	my_timer.start("result visualizing");
-//	visualize(*communities, v, k, dataset_name);
-//	my_timer.end();
-//	outputCommunities(communities, v, k);
+	my_timer.start("result visualizing");
+	visualize(*communities, v, k, dataset_name);
+	my_timer.end();
+	outputCommunities(communities, v, k);
 	for (unordered_set<Community*>::iterator it = communities->begin(); it != communities->end(); it++){
 		delete *it;
 	}
