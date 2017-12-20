@@ -95,12 +95,14 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 	int kmax = k2 - 1;
 	vector<int> commonN;
 	getCommonN(u, v, commonN);
-	Graph Lk;
+	vector<Graph> Lk;
+	for(int k = 0; k <= kmax;k++)
+		Lk.push_back(Graph());
 	for(int w : commonN){
 		int k = min(get(w, u), get(w, v));
 		if(k <= kmax){
-			if(get(w, u) == k)Lk.addEdge(w, u, getKLevelTriangleListLen(w, u, k));
-			if(get(w, v) == k)Lk.addEdge(w, v, getKLevelTriangleListLen(w, v, k));
+			if(get(w, u) == k)Lk[k].addEdge(w, u, getKLevelTriangleListLen(w, u, k));
+			if(get(w, v) == k)Lk[k].addEdge(w, v, getKLevelTriangleListLen(w, v, k));
 		}
 	}
 	my_timer.end();
@@ -109,7 +111,7 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 	for(int k = kmax;k >= 2;k--){
 		vector<pair<int, int>> Q;
 		Q.clear();
-		for(MapG::iterator it = Lk.begin();it != Lk.end();it++){
+		for(Graph::MapG::iterator it = Lk[k].begin();it != Lk[k].end();it++){
 			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
 				Q.push_back(make_pair(it->first, itm->first));
 			}
@@ -127,31 +129,31 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 				if(get(z, x) < k || get(z, y) < k)continue;
 				s.addEdge(x, y, get(x, y) + 1);
 				pair<int, int> p(z, x);
-				if(get(z, x) == k && !Lk.edgeExists(z, x)){
+				if(get(z, x) == k && !Lk[k].edgeExists(z, x)){
 					Q.push_back(p);
-					Lk.addEdge(z, x, getKLevelTriangleListLen(z, x, k));
+					Lk[k].addEdge(z, x, getKLevelTriangleListLen(z, x, k));
 				}
 				pair<int, int> p2(z, y);
-				if(get(z, y) == k && !Lk.edgeExists(z, y)){
+				if(get(z, y) == k && !Lk[k].edgeExists(z, y)){
 					Q.push_back(p2);
-					Lk.addEdge(z, y, getKLevelTriangleListLen(z, y, k));
+					Lk[k].addEdge(z, y, getKLevelTriangleListLen(z, y, k));
 				}
 			}
 		}
 		int x, y;
-		while(getMinS(Lk, x, y) <= k-2){
-			Lk.remove(x, y);
+		while(getMinS(Lk[k], x, y) <= k-2){
+			Lk[k].remove(x, y);
 			vector<int> commonNXY;
 			getCommonN(x, y, commonNXY);
 			for(int z : commonN){
 				if(get(x, z) < k || get(y, z) < k)continue;
-				if(get(x, z) == k && !Lk.edgeExists(x, z))continue;
-				if(get(y, z) == k && !Lk.edgeExists(y, z))continue;
-				if(Lk.edgeExists(x, z))Lk.addEdge(x, z, Lk.get(x, z) - 1);
-				if(Lk.edgeExists(y, z))Lk.addEdge(y, z, Lk.get(y, z) - 1);
+				if(get(x, z) == k && !Lk[k].edgeExists(x, z))continue;
+				if(get(y, z) == k && !Lk[k].edgeExists(y, z))continue;
+				if(Lk[k].edgeExists(x, z))Lk[k].addEdge(x, z, Lk[k].get(x, z) - 1);
+				if(Lk[k].edgeExists(y, z))Lk[k].addEdge(y, z, Lk[k].get(y, z) - 1);
 			}
 		}
-		for(MapG::iterator it = Lk.begin();it != Lk.end();it++){
+		for(Graph::MapG::iterator it = Lk[k].begin();it != Lk[k].end();it++){
 			x = it->first;
 			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
 				y = itm->first;
