@@ -9,6 +9,7 @@ class Truss : public Graph{
 public:
 	Truss(Graph &G);
 	void updateWithEdgeInsertion(int u, int v);
+	void updateWithEdgeDeletion(int u, int v);
 	int getMaxK(vector<int> &commonN, int v);
 	int getMinKInTri(int x, int y, int z);
 
@@ -18,7 +19,7 @@ private:
 	void getKLevelTriangleList(int u, int v, int k, vector<int> &res);
 	int getKLevelTriangleListLen(int u, int v, int k);
 	void getK1K2(int u, int v, int &k1, int &k2);
-	int getMinS(Graph &s, int &x, int &y);
+	int getMinS(Graph &Lk, int &x, int &y);
 };
 
 #endif

@@ -113,21 +113,26 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 		Q.clear();
 		for(auto it = Lk[k].begin();it != Lk[k].end();it++){
 			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
-				Q.push_back(make_pair(it->first, itm->first));
+				int l, r;
+				l = min(it->first, itm->first);
+				r = max(it->first, itm->first);
+				Q.push_back(make_pair(l, r));
 			}
 		}
-		Graph s;
+		sort(Q.begin(),Q.end());
+		Q.erase(unique(Q.begin(), Q.end()), Q.end());
+
 		while(!Q.empty()){
 			pair<int, int> e = Q[Q.size()-1];
 			Q.pop_back();
 			int x = e.first;
 			int y = e.second;
-			s.addEdge(x, y, 0);
+			Lk[k].addEdge(x, y, 0);
 			vector<int> commonNXY;
 			getCommonN(x, y, commonNXY);
 			for(int z : commonNXY){
 				if(get(z, x) < k || get(z, y) < k)continue;
-				s.addEdge(x, y, get(x, y) + 1);
+				Lk[k].addEdge(x, y, Lk[k].get(x, y) + 1);
 				pair<int, int> p(z, x);
 				if(get(z, x) == k && !Lk[k].edgeExists(z, x)){
 					Q.push_back(p);
@@ -164,20 +169,106 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 	my_timer.end();
 }
 
-int Truss::getMinS(Graph &s, int &x, int &y){
+void Truss::updateWithEdgeDeletion(int u, int v) {
+	MyTimer my_timer;
+//	int k1, k2;
+//	my_timer.start("compute k1 & k2");
+//	getK1K2(u, v, k1, k2);
+//	my_timer.end();
 
-	if(!s.hasEdge())return 10000;
+	my_timer.start("init Lk");
+	int kmax = get(u, v);
+	remove(u, v);
+	vector<int> commonN;
+	getCommonN(u, v, commonN);
+	vector<Graph> Lk;
+	for(int k = 0; k <= kmax;k++)
+		Lk.push_back(Graph());
+	for(int w : commonN){
+		int k = min(get(w, u), get(w, v));
+		if(k <= kmax){
+			if(get(w, u) == k)Lk[k].addEdge(w, u, getKLevelTriangleListLen(w, u, k));
+			if(get(w, v) == k)Lk[k].addEdge(w, v, getKLevelTriangleListLen(w, v, k));
+		}
+	}
+	my_timer.end();
 
-	x = s.begin()->first;
-	y = s.begin()->second.begin()->first;
-	int min = s.begin()->second.begin()->second;
+	my_timer.start("deal with Lk");
+	for(int k = kmax;k >= 2;k--){
+		vector<pair<int, int>> Q;
+		Q.clear();
+		for(auto it = Lk[k].begin();it != Lk[k].end();it++){
+			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
+				int l, r;
+				l = min(it->first, itm->first);
+				r = max(it->first, itm->first);
+				Q.push_back(make_pair(l, r));
+			}
+		}
+		sort(Q.begin(),Q.end());
+		Q.erase(unique(Q.begin(), Q.end()), Q.end());
 
-	for(auto it = begin();it != end();it++){
+		while(!Q.empty()){
+			pair<int, int> e = Q[Q.size()-1];
+			Q.pop_back();
+			int x = e.first;
+			int y = e.second;
+			Lk[k].addEdge(x, y, 0);
+			vector<int> commonNXY;
+			getCommonN(x, y, commonNXY);
+			for(int z : commonNXY){
+				if(get(z, x) < k || get(z, y) < k)continue;
+				Lk[k].addEdge(x, y, Lk[k].get(x, y) + 1);
+				pair<int, int> p(z, x);
+				if(get(z, x) == k && !Lk[k].edgeExists(z, x)){
+					Q.push_back(p);
+					Lk[k].addEdge(z, x, getKLevelTriangleListLen(z, x, k));
+				}
+				pair<int, int> p2(z, y);
+				if(get(z, y) == k && !Lk[k].edgeExists(z, y)){
+					Q.push_back(p2);
+					Lk[k].addEdge(z, y, getKLevelTriangleListLen(z, y, k));
+				}
+			}
+		}
+		int x, y;
+		while(getMinS(Lk[k], x, y) <= k-2){
+			Lk[k].remove(x, y);
+			vector<int> commonNXY;
+			getCommonN(x, y, commonNXY);
+			for(int z : commonNXY){
+				if(get(x, z) < k || get(y, z) < k)continue;
+				if(get(x, z) == k && !Lk[k].edgeExists(x, z))continue;
+				if(get(y, z) == k && !Lk[k].edgeExists(y, z))continue;
+				if(Lk[k].edgeExists(x, z))Lk[k].addEdge(x, z, Lk[k].get(x, z) - 1);
+				if(Lk[k].edgeExists(y, z))Lk[k].addEdge(y, z, Lk[k].get(y, z) - 1);
+			}
+		}
+		for(auto it = Lk[k].begin();it != Lk[k].end();it++){
+			x = it->first;
+			for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
+				y = itm->first;
+				addEdge(x, y, k - 1);
+			}
+		}
+	}
+	my_timer.end();
+}
+
+int Truss::getMinS(Graph &Lk, int &x, int &y){
+
+	if(!Lk.hasEdge())return 10000;
+
+	x = Lk.begin()->first;
+	y = Lk.begin()->second.begin()->first;
+	int min = Lk.begin()->second.begin()->second;
+
+	for(auto it = Lk.begin();it != Lk.end();it++){
 		for(map<int, int>::iterator itm = it->second.begin();itm != it->second.end();itm++){
 			if(itm->second < min){
-				min = itm->second;
 				x = it->first;
 				y = itm->first;
+				min = itm->second;
 			}
 		}
 	}

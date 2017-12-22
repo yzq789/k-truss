@@ -1,4 +1,5 @@
 #include <queue>
+#include <iostream>
 #include "query_processor.h"
 #include "my_timer.h"
 #include "visualize.h"
@@ -93,6 +94,24 @@ void QueryProcessor::insertEdge(int u, int v) {
 //		int mink = T->getMinKInTri(u, v, w);
 //		tcpIndex->updateEdge(w, u, v, mink);
 //	}
+	tcpIndex = new TCPIndex(*G, *T);
+	my_timer.end();
+}
+
+void QueryProcessor::deleteEdge(int u, int v) {
+	if(!G->edgeExists(u ,v)){
+		cout <<"This edge does not exist!" <<endl;
+		return;
+	}
+
+	MyTimer my_timer;
+	G->remove(u, v);
+
+	my_timer.start("update truss");
+	T->updateWithEdgeDeletion(u, v);
+	my_timer.end();
+
+	my_timer.start("update TCP index");
 	tcpIndex = new TCPIndex(*G, *T);
 	my_timer.end();
 }

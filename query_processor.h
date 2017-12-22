@@ -11,6 +11,7 @@ public:
 	~QueryProcessor();
 	unordered_set<Community*>* queryKTrussCommunities(int v, int k);
 	void insertEdge(int u, int v);
+	void deleteEdge(int u, int v);
 	void displayKTruss();
 	TCPIndex *tcpIndex;
 

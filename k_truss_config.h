@@ -1,1 +1,1 @@
-#define ROOT_PATH ""
+#define ROOT_PATH "/Users/East/CLionProjects/k-truss/"

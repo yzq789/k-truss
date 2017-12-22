@@ -153,5 +153,3 @@ void Graph::display() {
 		}
 	}
 }
-41 32
-44 32
