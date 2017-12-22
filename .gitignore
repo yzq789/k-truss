@@ -315,3 +315,5 @@ OpenCover/
 
 # Azure Stream Analytics local run output 
 ASALocalRun/
+
+k_truss_config.h

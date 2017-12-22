@@ -3,6 +3,7 @@
 #include "my_timer.h"
 #include "query_processor.h"
 #include "visualize.h"
+#include "k_truss_config.h"
 
 using namespace std;
 
@@ -25,21 +26,19 @@ int main(){
 	ios_base::sync_with_stdio(false);
 	QueryProcessor *query_processor;
 
-	char *test_path = "/Users/East/CLionProjects/k-truss/data/test.txt";
+    char *test_path = ROOT_PATH"data/test.txt";
 	query_processor = new QueryProcessor(test_path);
     unordered_set<Community*>* communities = query_processor->queryKTrussCommunities(9, 5);
 	display(communities);
-	query_processor->displayKTruss();
 //    my_timer.start("result visualizing");
 //	visualize(*communities, 9, 5, "test.txt");
 //	my_timer.end();
 
-	char *test_path1 = "/Users/East/CLionProjects/k-truss/data/test1.txt";
+	char *test_path1 = ROOT_PATH"data/test1.txt";
 	query_processor = new QueryProcessor(test_path1);
 	query_processor->insertEdge(9, 31);
 	unordered_set<Community*>* communities1 = query_processor->queryKTrussCommunities(9, 5);
 	display(communities1);
-	query_processor->displayKTruss();
 	delete query_processor;
 
 //    cout <<"Begin facebook:" <<endl;

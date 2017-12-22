@@ -3,6 +3,8 @@
 #include "truss.h"
 #include "my_timer.h"
 
+#define min(a,b) (((a)<(b))?(a):(b))
+
 using namespace std;
 
 Truss::Truss(Graph &G){
@@ -163,6 +165,7 @@ void Truss::updateWithEdgeInsertion(int u, int v) {
 }
 
 int Truss::getMinS(Graph &s, int &x, int &y){
+
 	if(!s.hasEdge())return 10000;
 
 	x = s.begin()->first;
